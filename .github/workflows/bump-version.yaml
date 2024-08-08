@@ -1,3 +1,4 @@
+name: Bump version
 on:
   workflow_dispatch:
     inputs:
@@ -30,7 +31,7 @@ jobs:
           echo "version=$(cat package.json | jq -r .version)" >> $GITHUB_OUTPUT
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Bump version to ${{ steps.bump.outputs.version }}
