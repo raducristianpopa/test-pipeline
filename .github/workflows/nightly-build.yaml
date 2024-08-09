@@ -33,6 +33,8 @@ jobs:
       - name: Delete existing release
         # https://cli.github.com/manual/gh_release_delete
         run: gh release delete nightly --cleanup-tag --yes
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
