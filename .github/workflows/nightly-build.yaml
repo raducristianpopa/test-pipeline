@@ -30,9 +30,10 @@ jobs:
         run: |
           ./scripts/build.sh ${{ steps.version.outputs.VERSION }} nightly chrome
           ./scripts/build.sh ${{ steps.version.outputs.VERSION }} nightly firefox
-        #   - name: Delete existing release
-        #     # https://cli.github.com/manual/gh_release_delete
-        #     run: gh release delete nightly --cleanup-tag --yes
+      - name: Delete existing release
+        # https://cli.github.com/manual/gh_release_delete
+        run: gh release delete nightly --cleanup-tag --yes
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Release
@@ -41,7 +42,6 @@ jobs:
           files: |
             dist/chrome.zip
             dist/firefox.zip
-          target_commitish: ${{ github.sha }}
           tag_name: "nightly"
           name: Nightly ${{ steps.version.outputs.VERSION }}
           prerelease: true
