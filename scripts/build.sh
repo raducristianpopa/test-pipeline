@@ -28,4 +28,8 @@ if [ $CHANNEL == 'nightly' ]; then
   jq --arg arg_name "${NAME} Nightly" '.name = $arg_name' "$MANIFEST" > "$tmp" && mv "$tmp" "$MANIFEST"
 fi
 
-cd dist && zip -r ${BROWSER}.zip ${BROWSER} && cd -
+artifact_name="${BROWSER}.zip"
+if [ $CHANNEL == 'preview' ]; then
+  artifact_name="preview-${BROWSER}-${VERSION}.zip"
+fi
+cd dist && zip -r "$artifact_name" ${BROWSER} && cd -

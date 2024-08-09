@@ -1,0 +1,44 @@
+name: Release for Preview Channel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/manifest.json"
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-preview:
+    if: "${{ startsWith(github.event.head_commit.message, 'chore(release): ') }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version-file: ".nvmrc" }
+      - name: Get Version
+        id: version
+        run: |
+          echo "VERSION=$(jq -r '.version' './src/manifest.json')" >> $GITHUB_OUTPUT
+
+      # The build script here will unncessarily set the version
+      - name: Build
+        run: |
+          ./scripts/build.sh ${{ steps.version.outputs.VERSION }} preview chrome
+          ./scripts/build.sh ${{ steps.version.outputs.VERSION }} preview firefox
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/preview-chrome-${{ steps.version.outputs.VERSION }}.zip
+            dist/preview-firefox-${{ steps.version.outputs.VERSION }}.zip
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: Web Monetization Extension Preview v${{ steps.version.outputs.VERSION }}
+          prerelease: true
