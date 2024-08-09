@@ -37,6 +37,6 @@ jobs:
             dist/chrome.zip
             dist/firefox.zip
           tag_name: "nightly"
-          release_name: Nightly ${{ github.ref }}
+          name: Nightly ${{ github.ref }}
           draft: false
           prerelease: true
