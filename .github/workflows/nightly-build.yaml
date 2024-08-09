@@ -43,5 +43,4 @@ jobs:
             dist/firefox.zip
           tag_name: "nightly"
           name: Nightly ${{ steps.version.outputs.VERSION }}
-          draft: false
           prerelease: true
