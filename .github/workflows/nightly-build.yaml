@@ -30,6 +30,9 @@ jobs:
         run: |
           ./scripts/build.sh ${{ steps.version.outputs.VERSION }} nightly chrome
           ./scripts/build.sh ${{ steps.version.outputs.VERSION }} nightly firefox
+      - name: Delete existing release
+        # https://cli.github.com/manual/gh_release_delete
+        run: gh release delete nightly --cleanup-tag --yes
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
@@ -37,6 +40,6 @@ jobs:
             dist/chrome.zip
             dist/firefox.zip
           tag_name: "nightly"
-          name: Nightly ${{ github.ref }}
+          name: Nightly ${{ steps.version.outputs.VERSION }}
           draft: false
           prerelease: true
