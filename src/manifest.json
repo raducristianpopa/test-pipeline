@@ -1,21 +1,31 @@
 {
   "$schema": "https://json.schemastore.org/chrome-manifest",
   "name": "Test extension",
-  "version": "0.1.0.0",
+  "version": "0.1.0.1",
   "manifest_version": 3,
   "description": "some description",
   "default_locale": "en",
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
-      "js": ["content/content.js"],
+      "matches": [
+        "https://*/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
-  "permissions": ["tabs", "storage", "alarms"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms"
+  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
-  "host_permissions": ["https://*/*"]
+  "host_permissions": [
+    "https://*/*"
+  ]
 }
