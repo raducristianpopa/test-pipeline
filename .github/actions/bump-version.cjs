@@ -11,9 +11,10 @@ module.exports = async ({ github, context, core }) => {
   /**@type {string} */
   const existingVersion = manifest.version;
 
-  const bumpType = /** @type {BumpType} */ (
-    core.getInput("version", { required: true })
-  );
+  const bumpType = /** @type {BumpType} */ (process.env.INPUT_VERSION);
+  if (!bumpType) {
+    throw new Error("Missing bump type");
+  }
 
   const version = bumpVersion(existingVersion, bumpType).join(".");
 

@@ -30,6 +30,8 @@ jobs:
       - name: Bump version
         id: bump
         uses: actions/github-script@v7
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
         with:
           script: |
             const script = require('./.github/actions/bump-version.cjs')
