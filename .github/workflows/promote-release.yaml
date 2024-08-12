@@ -63,3 +63,4 @@ jobs:
           tag_name: v${{ steps.version.outputs.VERSION }}
           name: Web Monetization Extension v${{ steps.version.outputs.VERSION }}
           prerelease: false
+          fail_on_unmatched_files: true
