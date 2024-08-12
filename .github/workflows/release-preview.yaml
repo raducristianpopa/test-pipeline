@@ -2,7 +2,9 @@ name: Release for Preview Channel
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - v+.x
     paths:
       - "src/manifest.json"
 
@@ -45,3 +47,8 @@ jobs:
           tag_name: v${{ steps.version.outputs.VERSION }}-preview
           name: Web Monetization Extension Preview v${{ steps.version.outputs.VERSION }}
           prerelease: true
+
+      - name: Upload to stores
+        if: github.ref_name == 'main'
+        run: |
+          echo 'uploading to webstores'
