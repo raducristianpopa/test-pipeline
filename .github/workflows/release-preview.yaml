@@ -42,6 +42,6 @@ jobs:
           files: |
             dist/preview-chrome-${{ steps.version.outputs.VERSION }}.zip
             dist/preview-firefox-${{ steps.version.outputs.VERSION }}.zip
-          tag_name: preview/v${{ steps.version.outputs.VERSION }}
+          tag_name: v${{ steps.version.outputs.VERSION }}-preview
           name: Web Monetization Extension Preview v${{ steps.version.outputs.VERSION }}
           prerelease: true

@@ -1,0 +1,51 @@
+name: Promote release
+run-name: Promote ${{ github.event.inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Tag (vX.X.X.X-preview)"
+        required: true
+        type: string
+
+jobs:
+  promote-release:
+    runs-on: ubuntu-latest
+    name: Promote
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+      - uses: actions/setup-node@v4
+        with: { node-version-file: ".nvmrc" }
+
+      - name: Validate input
+        run: |
+          if [[ ! "${{ github.event.inputs.version }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-preview$ ]]; then
+            echo "::error::Input 'version' must match vX.X.X.X-preview"
+            exit 1
+          fi
+
+      - name: Get Version
+        id: version
+        run: |
+          git checkout ${{ github.workflow.inputs.version }}
+          echo "VERSION=$(jq -r '.version' './src/manifest.json')" >> $GITHUB_OUTPUT
+          git checkout -
+
+      # The build script here will unncessarily set the version
+      - name: Build
+        run: |
+          ./scripts/build.sh ${{ steps.version.outputs.VERSION }} release chrome
+          ./scripts/build.sh ${{ steps.version.outputs.VERSION }} release firefox
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/chrome-${{ steps.version.outputs.VERSION }}.zip
+            dist/firefox-${{ steps.version.outputs.VERSION }}.zip
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: Web Monetization Extension v${{ steps.version.outputs.VERSION }}
+          prerelease: false
