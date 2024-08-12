@@ -23,6 +23,7 @@ permissions:
 jobs:
   promote-release:
     runs-on: ubuntu-latest
+    environment: production
     name: Promote
     steps:
       - uses: actions/checkout@v4

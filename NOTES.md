@@ -8,3 +8,5 @@ Requirements:
 !!! IMPORTANT !!!
 
 Make sure to have the extension version as `major.minor.patch.build`
+Add environments when pushing to preview channel and for the promotion of a preview release
+(someone has to approve them)
