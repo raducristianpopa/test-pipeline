@@ -30,9 +30,9 @@ jobs:
       - name: Get Version
         id: version
         run: |
-          git checkout ${{ github.workflow.inputs.version }}
+          git checkout ${{ github.event.inputs.version }}
           echo "VERSION=$(jq -r '.version' './src/manifest.json')" >> $GITHUB_OUTPUT
-          git checkout -
+          git checkout main
 
       # The build script here will unncessarily set the version
       - name: Build
