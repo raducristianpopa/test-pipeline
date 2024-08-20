@@ -6,23 +6,25 @@
  * @param {import('github-script').AsyncFunctionArguments} AsyncFunctionArguments
  */
 module.exports = async ({ github, context }) => {
-  const { owner, repo } = context.repo
-  const previewVersionTag = process.env.INPUT_VERSION
+  const { owner, repo } = context.repo;
+  const previewVersionTag = process.env.INPUT_VERSION;
   if (!previewVersionTag) {
-    throw new Error('Missing env.INPUT_VERSION')
+    throw new Error("Missing env.INPUT_VERSION");
   }
   if (!previewVersionTag.match(/^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-preview$/)) {
-    throw new Error('Input "version" must match vX.X.X.X-preview')
+    throw new Error('Input "version" must match vX.X.X.X-preview');
   }
 
-  const versionTag = previewVersionTag.replace('-preview', '')
-  const res = await github.rest.repos.getReleaseByTag({
-    owner,
-    repo,
-    tag: versionTag
-  })
-  if (res.status < 400) {
-    throw new Error('Release already promoted to stable')
+  const versionTag = previewVersionTag.replace("-preview", "");
+  try {
+    const res = await github.rest.repos.getReleaseByTag({
+      owner,
+      repo,
+      tag: versionTag,
+    });
+    
+      console.log(res.data)
+  } catch (e) {
+      console.log(e)
   }
-}
-
+};
