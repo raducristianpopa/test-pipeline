@@ -26,9 +26,14 @@ jobs:
     environment: production
     name: Promote
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # We want to build extension using the code and dependencies as of
+          # this tag. The scripts, workflows are back-ported, so they can be
+          # used consistently.
+          ref: ${{ github.event.inputs.version }}
 
       - uses: actions/setup-node@v4
         with: { node-version-file: ".nvmrc" }
@@ -47,9 +52,7 @@ jobs:
       - name: Get Version
         id: version
         run: |
-          git checkout ${{ github.event.inputs.version }}
           echo "VERSION=$(jq -r '.version' './src/manifest.json')" >> $GITHUB_OUTPUT
-          git checkout main
 
       # The build script here will unncessarily set the version
       - name: Build

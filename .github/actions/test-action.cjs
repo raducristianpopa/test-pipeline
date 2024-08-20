@@ -17,14 +17,16 @@ module.exports = async ({ github, context }) => {
 
   const versionTag = previewVersionTag.replace("-preview", "");
   try {
-    const res = await github.rest.repos.getReleaseByTag({
+    await github.rest.repos.getReleaseByTag({
       owner,
       repo,
       tag: versionTag,
     });
     
-      console.log(res.data)
+      throw new Error('already exists');
   } catch (e) {
-      console.log(e)
+      if(e.status !== 404) {
+          throw new Error('Test error message')
+      } 
   }
 };
