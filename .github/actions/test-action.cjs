@@ -14,6 +14,10 @@ module.exports = async ({ github, context }) => {
   if (!previewVersionTag.match(/^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-preview$/)) {
     throw new Error('Input "version" must match vX.X.X.X-preview');
   }
+    
+    github.rest.repos.listTags({
+
+    })
 
   const versionTag = previewVersionTag.replace("-preview", "");
   try {
@@ -23,9 +27,9 @@ module.exports = async ({ github, context }) => {
       tag: versionTag,
     });
     
-      throw new Error('already exists');
+    throw new Error('already exists');
   } catch (e) {
-      if(e.status !== 404) {
+      if(e.status && e.status !== 404) {
           throw new Error('Test error message')
       } 
   }

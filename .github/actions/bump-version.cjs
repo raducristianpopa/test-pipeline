@@ -5,6 +5,8 @@ const fs = require("node:fs/promises");
 
 /** @param {import('github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 module.exports = async ({ github, context, core }) => {
+  console.log(JSON.stringify(context, null, 2))
+    throw new Error('do not run!')
   const manifestPath = "./src/manifest.json";
   const manifestFile = await fs.readFile(manifestPath, "utf8");
   const manifest = JSON.parse(manifestFile);
