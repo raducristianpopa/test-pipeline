@@ -1,14 +1,10 @@
 name: PR checks
-on: pull_request_target
+on: pull_request
 
 jobs:
   add-comment:
     runs-on: ubuntu-latest
     steps:
-      - name: Add comment
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: 22
-          body: test body
-          edit-mode: replace
+      - name: Build
+        run: |
+          echo done
