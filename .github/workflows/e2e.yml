@@ -1,0 +1,41 @@
+name: End-to-End Tests
+on:
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: ${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  test-e2e:
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/test') }}
+    timeout-minutes: 15
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: React to comment
+        uses: peter-evans/create-or-update-comment@v4
+        continue-on-error: true
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-id: ${{ github.event.comment.id }}
+          reactions: '+1'
+          reactions-edit-mode: replace
+
+      - name: Identify PR
+        id: request
+        uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v4
+      - name: Checkout PR
+        run: gh pr checkout ${{ github.event.issue.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git status
+      - run: 'echo running e2e tests'
