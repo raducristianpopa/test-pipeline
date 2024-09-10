@@ -7,6 +7,9 @@ concurrency:
   group: ${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
+permissions:
+  pull-requests: write
+
 jobs:
   test-e2e:
     if: ${{ contains(github.event.review.body, '/test') }}
