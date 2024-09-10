@@ -1,5 +1,6 @@
 - We can remove `version` from package.json
 - We will mostly use JS scripts for the build steps and the additional required scripts (e.g. versioning)
+- testing e2e trigger
 
 Requirements:
 
