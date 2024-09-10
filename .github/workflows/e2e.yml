@@ -1,7 +1,7 @@
 name: End-to-End Tests
 on:
-  pull_request_review_comment:
-    types: [created]
+  pull_request_review: 
+    types: [submitted]  
 
 concurrency:
   group: ${{ github.event.pull_request.number }}
@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   test-e2e:
-    if: ${{ contains(github.event.comment.body, '/test') }}
+    if: ${{ contains(github.event.review.body, '/test') }}
     timeout-minutes: 15
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
         continue-on-error: true
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-id: ${{ github.event.comment.id }}
+          comment-id: ${{ github.event.review.id }}
           reactions: '+1'
           reactions-edit-mode: replace
 
