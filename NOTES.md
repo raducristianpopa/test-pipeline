@@ -5,7 +5,8 @@ Requirements:
 
 - `version.cjs` - takes care of bumping the manifest version (by build, patch or minor).
 
-!!! IMPORTANT !!!
+> [!WARNING]
+> Hello
 
 Make sure to have the extension version as `major.minor.patch.build`
 Add environments when pushing to preview channel and for the promotion of a preview release
